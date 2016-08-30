@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WP clutter remover
  * Description: Removes clutter from HTML head and pingback/trackback support.
- * Version: 1.4
+ * Version: 1.3
  * Author: Aleksi Kinnunen
  * License: GPLv3
  */
@@ -99,20 +99,3 @@ add_filter('tiny_mce_plugins', function($plugins) {
 // Need to flush when rules are changed
 register_activation_hook(__FILE__, 'flush_rewrite_rules');
 register_deactivation_hook(__FILE__, 'flush_rewrite_rules');
-
-// Updater
-if (is_admin()) {
-    require_once('updater.php');
-    new WP_GitHub_Updater([
-        'slug' => plugin_basename(__FILE__),
-        'proper_folder_name' => 'wp-clutter-remover',
-        'api_url' => 'https://api.github.com/repos/sopsys/wp-clutter-remover',
-        'raw_url' => 'https://raw.githubusercontent.com/sopsys/wp-clutter-remover/master',
-        'github_url' => 'https://github.com/sopsys/wp-clutter-remover',
-        'zip_url' => 'https://github.com/sopsys/wp-clutter-remover/zipball/master',
-        'sslverify' => true,
-        'requires' => '3.0',
-        'tested' => '3.3',
-        'readme' => 'README.md',
-    ]);
-}
