@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: WP clutter remover
- * Description: Removes clutter from HTML head and pingback/trackback support.
+ * Description: Removes clutter from HTML head, smilies and pingback/trackback support.
  * Version: 1.5
  * Author: Aleksi Kinnunen
  * License: GPLv3
