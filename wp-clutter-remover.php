@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WP clutter remover
  * Description: Removes clutter from HTML head and pingback/trackback support.
- * Version: 1.3
+ * Version: 1.5
  * Author: Aleksi Kinnunen
  * License: GPLv3
  */
@@ -73,6 +73,8 @@ remove_action('wp_print_styles', 'print_emoji_styles');
 remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
 remove_filter('the_content_feed', 'wp_staticize_emoji');
 remove_filter('comment_text_rss', 'wp_staticize_emoji');
+add_filter('emoji_svg_url', '__return_false');
+add_filter('option_use_smilies', '__return_false', 99, 1);
 add_filter('tiny_mce_plugins', function ($plugins) {
     if (is_array($plugins)) {
         return array_diff($plugins, ['wpemoji']);
