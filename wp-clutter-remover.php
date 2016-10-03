@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WP clutter remover
  * Description: Removes clutter from HTML head, smilies and pingback/trackback support.
- * Version: 1.5
+ * Version: 1.7
  * Author: Aleksi Kinnunen
  * License: GPLv3
  */
@@ -56,13 +56,15 @@ add_action('xmlrpc_call', function ($action) {
 remove_action('wp_head', 'wp_generator');
 remove_action('wp_head', 'rsd_link');
 remove_action('wp_head', 'wlwmanifest_link');
-remove_action('wp_head', 'feed_links', 2);
-remove_action('wp_head', 'feed_links_extra', 3);
+remove_action('wp_head', 'feed_links');
+remove_action('wp_head', 'feed_links_extra');
 remove_action('wp_head', 'index_rel_link');
-remove_action('wp_head', 'parent_post_rel_link', 10, 0);
-remove_action('wp_head', 'start_post_rel_link', 10, 0);
-remove_action('wp_head', 'adjacent_posts_rel_link', 10, 0);
-remove_action('template_redirect', 'wp_shortlink_header', 11);
+remove_action('wp_head', 'parent_post_rel_link');
+remove_action('wp_head', 'start_post_rel_link');
+remove_action('wp_head', 'adjacent_posts_rel_link');
+remove_action('wp_head', 'adjacent_posts_rel_link_wp_head');
+remove_action('wp_head', 'wp_shortlink_wp_head');
+remove_action('template_redirect', 'wp_shortlink_header');
 add_filter('show_recent_comments_widget_style', '__return_false');
 
 // Disable emojis
@@ -88,14 +90,14 @@ add_filter('rest_enabled', '__return_false');
 add_filter('rest_jsonp_enabled', '__return_false');
 remove_action('wp_head', 'rest_output_link_wp_head');
 remove_action('wp_head', 'wp_oembed_add_discovery_links');
-remove_action('template_redirect', 'rest_output_link_header', 11, 0);
+remove_action('template_redirect', 'rest_output_link_header');
 
 // Remove some oEmbed features - they're slow!
 add_filter('embed_oembed_discover', '__return_false');
 remove_action('wp_head', 'wp_oembed_add_host_js');
-remove_filter('oembed_dataparse', 'wp_filter_oembed_result', 10);
-add_filter('tiny_mce_plugins', function($plugins) {
-    return array_diff($plugins, array('wpembed'));
+remove_filter('oembed_dataparse', 'wp_filter_oembed_result');
+add_filter('tiny_mce_plugins', function ($plugins) {
+    return array_diff($plugins, ['wpembed']);
 });
 
 // Need to flush when rules are changed
