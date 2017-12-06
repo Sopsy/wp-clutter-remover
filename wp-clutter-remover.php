@@ -1,10 +1,11 @@
 <?php
 /**
  * Plugin Name: WP clutter remover
+ * Plugin URI: https://github.com/Sopsy/wp-clutter-remover/
  * Description: Removes clutter from HTML head, smilies and pingback/trackback support.
- * Version: 1.7
- * Author: Aleksi Kinnunen
- * License: GPLv3
+ * Version: 2.0
+ * Author: Aleksi "Sopsy" Kinnunen
+ * License: AGPLv3
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -52,7 +53,7 @@ add_action('xmlrpc_call', function ($action) {
     }
 });
 
-// Clean up tags from head
+// Clean up tags from head and http header
 remove_action('wp_head', 'wp_generator');
 remove_action('wp_head', 'rsd_link');
 remove_action('wp_head', 'wlwmanifest_link');
@@ -64,10 +65,12 @@ remove_action('wp_head', 'start_post_rel_link');
 remove_action('wp_head', 'adjacent_posts_rel_link');
 remove_action('wp_head', 'adjacent_posts_rel_link_wp_head');
 remove_action('wp_head', 'wp_shortlink_wp_head');
-remove_action('template_redirect', 'wp_shortlink_header');
 add_filter('show_recent_comments_widget_style', '__return_false');
+remove_action('template_redirect', 'wp_shortlink_header', 11);
+remove_action('template_redirect', 'rest_output_link_header', 11);
 
 // Disable emojis
+remove_action('init', 'smilies_init');
 remove_action('admin_print_styles', 'print_emoji_styles');
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('admin_print_scripts', 'print_emoji_detection_script');
@@ -88,9 +91,9 @@ add_filter('tiny_mce_plugins', function ($plugins) {
 // Disable REST API
 add_filter('rest_enabled', '__return_false');
 add_filter('rest_jsonp_enabled', '__return_false');
+remove_action('init', 'rest_api_init');
 remove_action('wp_head', 'rest_output_link_wp_head');
 remove_action('wp_head', 'wp_oembed_add_discovery_links');
-remove_action('template_redirect', 'rest_output_link_header');
 
 // Remove some oEmbed features - they're slow!
 add_filter('embed_oembed_discover', '__return_false');
@@ -100,6 +103,25 @@ add_filter('tiny_mce_plugins', function ($plugins) {
     return array_diff($plugins, ['wpembed']);
 });
 
+// Remove unnecessary dashboard widgets
+add_action('wp_dashboard_setup', function () {
+    //remove_meta_box('dashboard_quick_press', 'dashboard', 'side'); //Quick Press widget
+    //remove_meta_box('dashboard_recent_drafts', 'dashboard', 'side'); //Recent Drafts
+    //remove_meta_box('dashboard_activity', 'dashboard', 'normal'); //Activity
+    remove_meta_box('dashboard_primary', 'dashboard', 'side'); //WordPress.com Blog
+    remove_meta_box('dashboard_secondary', 'dashboard', 'side'); //Other WordPress News
+    remove_meta_box('dashboard_right_now', 'dashboard', 'normal'); //Right Now
+    remove_action('welcome_panel', 'wp_welcome_panel');
+});
+
 // Need to flush when rules are changed
 register_activation_hook(__FILE__, 'flush_rewrite_rules');
 register_deactivation_hook(__FILE__, 'flush_rewrite_rules');
+
+// Remove translations - we don't need them. They use a LOT of resources
+add_filter('override_load_textdomain', '__return_false');
+remove_action('wp_enqueue_scripts', 'wp_localize_jquery_ui_datepicker');
+remove_action('admin_enqueue_scripts', 'wp_localize_jquery_ui_datepicker');
+
+// Remove wptexturize
+add_filter('run_wptexturize', '__return_false');
