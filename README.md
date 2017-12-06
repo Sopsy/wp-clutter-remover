@@ -3,6 +3,15 @@ For most WordPress installs, we don't need many of it's features. This plugin is
 
 # Changelog
 
+2.0
+---
+- Remove shortlink header
+- Remove REST API
+- Remove REST header
+- Remove unnecessary dashboard widgets
+- Remove wptexturize
+- Remove translations
+
 1.7
 ---
 - Fix removing rel=prev,next
