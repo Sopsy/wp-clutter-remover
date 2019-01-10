@@ -5,7 +5,7 @@
  * Description: Removes clutter from HTML head, smilies and pingback/trackback support.
  * Version: 2.1
  * Author: Aleksi "Sopsy" Kinnunen
- * License: AGPLv3
+ * License: LGPLv3
  */
 if (!defined('ABSPATH')) {
     exit;
