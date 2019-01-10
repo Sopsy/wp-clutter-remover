@@ -3,6 +3,10 @@ For most WordPress installs, we don't need many of it's features. This plugin is
 
 # Changelog
 
+2.1
+---
+- Restore the REST API, as Gutenberg needs it to function
+
 2.0
 ---
 - Remove shortlink header
