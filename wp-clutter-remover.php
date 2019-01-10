@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WP clutter remover
  * Description: Removes clutter from HTML head, smilies and pingback/trackback support.
- * Version: 1.7
+ * Version: 1.8
  * Author: Aleksi Kinnunen
  * License: GPLv3
  */
@@ -85,9 +85,7 @@ add_filter('tiny_mce_plugins', function ($plugins) {
     }
 });
 
-// Disable REST API
-add_filter('rest_enabled', '__return_false');
-add_filter('rest_jsonp_enabled', '__return_false');
+// Remove REST API headers and tags
 remove_action('wp_head', 'rest_output_link_wp_head');
 remove_action('wp_head', 'wp_oembed_add_discovery_links');
 remove_action('template_redirect', 'rest_output_link_header');
